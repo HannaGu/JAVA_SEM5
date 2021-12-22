@@ -26,7 +26,7 @@ public class MainRestController {
 
         //private static final Logger logger = Logger.getLogger(MainRestController.class);
 
-        @GetMapping("/users")
+        @PostMapping("/users")
         public List<User> getUsers() throws ControllerException {
             try {
                 //logger.debug("getting all users");

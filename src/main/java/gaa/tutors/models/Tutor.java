@@ -17,14 +17,10 @@ public class Tutor {
     private Long id;
 
     @Column
-    private String login;
+    private String name;
 
     @Column
-    private String password;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private UserRole userRole;
+    private String surname;
 
     @Column
     private String email;
@@ -33,5 +29,5 @@ public class Tutor {
     private String subject;
 
     @Column
-    private Long cost;
+    private Long costPerHour;
 }

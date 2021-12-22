@@ -12,20 +12,16 @@ import org.springframework.stereotype.Repository;
     public interface TutorRepo extends JpaRepository<Tutor, Long> {
      @Modifying
      void deleteById(int id) throws RepositoryException;
-
-     @Modifying
-     void deleteByLogin(String login) throws RepositoryException;
-
      Tutor getById(Long id);
-
-     Tutor getByLogin(String login) throws RepositoryException;
-
-     boolean existsByLogin(String login) throws RepositoryException;
+     boolean existsById(Long id);
 
      @Modifying
-     @Query("update Tutor t set t.subject=:subject, t.cost=:cost where t.id=:id")
-     void updateScooterById(
+     @Query("update Tutor t set t.name=:name, t.surname=:surname, t.email=:email, t.subject=:subject, t.costPerHour=:cost where t.id=:id")
+     void updateTutorById(
              @Param("id") Long id,
+             @Param("name") String name,
+             @Param("surname") String surname,
+             @Param("email") String email,
              @Param("subject") String subject,
              @Param("cost") int cost
      ) throws RepositoryException;
