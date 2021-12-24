@@ -1,3 +1,8 @@
+var start = 0;
+var showCount = 5;
+var end = 5;
+
+
 function isTokenExist() {
     return localStorage.getItem('token') != null;
 }
@@ -24,15 +29,16 @@ async function getUser() {
 }
 
 function validateLoginPass(login, password , email) {
-    if (!(login.length >= 5 && login.length <= 20)) {
-        return "Login should from 5 to 20 characters length";
+    if (!(login.length >= 4 && login.length <= 16)) {
+        return "not correct login";
     }
-    if (!(password.length >= 5 && password.length <= 20)) {
-        return "Password should from 5 to 20 characters length";
+    if (!(password.length >= 4 && password.length <= 16)) {
+        return "not correct password";
     }
-    if (!email.length >= 5) {
-        return "Email should from 5 characters length";
+    if (!email.length >= 4) {
+        return "not correct email";
     }
+
     return true;
 }
 

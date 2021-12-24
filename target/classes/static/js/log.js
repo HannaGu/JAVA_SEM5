@@ -7,6 +7,7 @@ async function logUser(data) {
         }
     });
 }
+
 async function login() {
     let login = document.getElementById("login").value;
     let password = document.getElementById("password").value;
