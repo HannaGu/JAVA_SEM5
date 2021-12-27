@@ -71,4 +71,15 @@ public class ContractRestController {
         }
     }
 
+    @DeleteMapping("/admin/deleteContractByUserId/{id}")
+    public ResponseEntity<?> deleteContractByUserId(@PathVariable(name="id")Long id)throws ControllerException {
+        try {
+            contractRepository.deleteByUserId(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException | RepositoryException e) {
+            throw new ControllerException(e);
+
+        }
+    }
+
 }

@@ -1,3 +1,6 @@
+let curUrl =  document.URL.split('/')
+let user_id = curUrl[4]
+
 async function genUserInfo() {
     let token = localStorage.getItem('token');
     let info = document.querySelector('.neededInfo');
@@ -90,16 +93,15 @@ async function genUserInfo() {
 
 async function adminDeleteUser(id){
     let token = localStorage.getItem('token');
-    await deleteContractByTutorId(id, token);
-    await deleteTutorById(id, token);
+    await deleteContractByUserId(id, token);
+    await deleteUserById(id, token);
     alert("Репетитор успешно удален");
     window.location.replace(window.location.origin);
 
 }
-
-async function deleteTutorById(id, token) {
+async function deleteUserById(id, token) {
     if(confirm('Уверены, что хотите удалить выбранный объект?')){
-        return await fetch(`/admin/deleteTutorById/${id}`, {
+        return await fetch(`/admin/deleteUserById/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -108,8 +110,8 @@ async function deleteTutorById(id, token) {
         });}
 }
 
-async function deleteContractByTutorId(id, token) {
-    return await fetch(`/admin/deleteContractByTutorId/${id}`, {
+async function deleteContractByUserId(id, token) {
+    return await fetch(`/admin/deleteContractByUserId/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -119,4 +121,22 @@ async function deleteContractByTutorId(id, token) {
 }
 
 
+async function onUserUpdateLoad(){
+    let token=localStorage.getItem("token");
+    fetch(`/admin/getUser/${user_id}`,{
+        headers:{'Authorization': `Bearer ${token}`}
+    }).then(result=>{
+        if(result.ok){
+            return result.json()
+        }
+    }).then(data=>{
+        userData.innerHTML=`
+                <p>Имя:</p>
+                <input id="userName" placeholder="Имя" value="${data.name}"> </input>
+                <p>Фамилия:</p>
+                <input id="userSurname" placeholder="Фамилия" value="${data.surname}"></input>
+                <p>Почта: </p>
+                <input id="userEmail" placeholder="Email" value="${data.email}"></input>`
+    });
 
+}

@@ -19,6 +19,16 @@ public class UserService implements IUserService {
     private UserRoleRepo userRoleRepository;
 
     @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.getById(id);
+    }
+
+    @Override
     public User saveUser(User user) {
         UserRole userRole = userRoleRepository.findByName(Role.ROLE_USER);
         user.setUserRole(userRole);

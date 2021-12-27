@@ -20,6 +20,10 @@ public interface ContractRepo extends JpaRepository<ContractForm, Long> {
     @Transactional
     @Query("delete from ContractForm c where c.tutor.id=:tutor_id")
     void deleteByTutorId(@Param("tutor_id") Long id) throws RepositoryException;
+    @Modifying
+    @Transactional
+    @Query("delete from ContractForm c where c.user.id=:user_id")
+    void deleteByUserId(@Param("user_id") Long id) throws RepositoryException;
 
 
     ContractForm getById(Long id);
