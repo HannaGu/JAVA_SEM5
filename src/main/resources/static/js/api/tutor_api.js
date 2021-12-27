@@ -125,9 +125,6 @@ async function createTutorAdmin(data) {
     });
 }
 
-
-
-
 async function updateTutor() {
     let token=localStorage.getItem("token");
     return await fetch("/user/updateTutor", {
@@ -139,6 +136,23 @@ async function updateTutor() {
         body: JSON.stringify({
 
         })
+    });
+}
+
+
+async function adminDeleteTutor(id){
+    let token = localStorage.getItem('token');
+    await deleteTutorById(id, token);
+}
+
+async function deleteTutorById(data, token) {
+    return await fetch("/admin/deleteTutorById", {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
 
     });
 }

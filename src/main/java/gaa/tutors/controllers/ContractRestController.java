@@ -2,6 +2,7 @@ package gaa.tutors.controllers;
 
 import gaa.tutors.dto.ContractRequest;
 import gaa.tutors.dto.ContractRequestNoId;
+import gaa.tutors.dto.TutorRequest;
 import gaa.tutors.exceptions.ControllerException;
 import gaa.tutors.jwt.JwtFilter;
 import gaa.tutors.jwt.JwtProvider;
@@ -55,5 +56,15 @@ public class ContractRestController {
         }
     }
 
+    @DeleteMapping("/admin/deleteTutorById")
+    public ResponseEntity<?> deleteTutorById(@RequestBody TutorRequest tutorRequest)throws ControllerException {
+        try {
+            tutorService.deleteById(tutorRequest.getId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+
+        }
+    }
 
 }

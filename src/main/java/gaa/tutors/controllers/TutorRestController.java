@@ -4,9 +4,11 @@ import gaa.tutors.dto.ContractRequest;
 import gaa.tutors.dto.TutorRequest;
 import gaa.tutors.dto.TutorRequestRate;
 import gaa.tutors.exceptions.ControllerException;
+import gaa.tutors.exceptions.RepositoryException;
 import gaa.tutors.jwt.JwtFilter;
 import gaa.tutors.models.Tutor;
 import gaa.tutors.models.User;
+import gaa.tutors.repository.ContractRepo;
 import gaa.tutors.service.TutorService;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ import java.util.logging.Logger;
 public class TutorRestController {
     @Autowired
     private TutorService tutorService;
+
+    @Autowired
+    private ContractRepo contractRepository;
 
 
     @PostMapping("/user/getAllTutors")
@@ -138,6 +143,16 @@ public class TutorRestController {
         }
     }
 
+    @DeleteMapping("/admin/deleteTutorById")
+    public ResponseEntity<?> deleteTutorById(@RequestBody TutorRequest tutorRequest)throws ControllerException {
+        try {
+            tutorService.deleteById(tutorRequest.getId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+
+        }
+   }
 
     @GetMapping({"/",""})
     public ModelAndView indexPage(Model model){
