@@ -121,6 +121,23 @@ public class TutorRestController {
         }
     }
 
+    @PostMapping("/admin/createTutor")
+    public ResponseEntity<?> createTutorAdmin(@RequestBody TutorRequestNoId tutorRequestNoId) throws ControllerException {
+        Tutor tutor = new Tutor(
+                tutorRequestNoId.getName(),
+                tutorRequestNoId.getSurname(),
+                tutorRequestNoId.getEmail(),
+                tutorRequestNoId.getSubject(),
+                tutorRequestNoId.getCost(),
+                tutorRequestNoId.getRate());
+        try {
+            tutorService.create(tutor);
+            return new ResponseEntity<>(tutor, HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+        }
+    }
+
 
     @GetMapping({"/",""})
     public ModelAndView indexPage(Model model){

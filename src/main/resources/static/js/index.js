@@ -106,11 +106,14 @@ async function loadUserIndex(){
     search.appendChild(searchButton);
 }
 
-//TODO
+
 async function loadAdminIndex(){
     let search=document.getElementById('search');
+    let tutorContainer=document.getElementById('allTutorsContainer');
     let searchButton=await button( generateSearchForAdmin,'Поиск');
+    let createHref=await a( 'addtutoradmin','Добавить репетитора');
     search.appendChild(searchButton);
+    tutorContainer.appendChild(createHref);
 
 }
 

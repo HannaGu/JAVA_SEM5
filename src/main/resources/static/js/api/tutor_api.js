@@ -97,6 +97,37 @@ async function createTutor(data) {
 
 
 
+async function adminAddTutor() {
+    let token=localStorage.getItem("token");
+
+     let info = {
+            name: document.getElementById("name").value,
+            surname: document.getElementById("surname").value,
+            email: document.getElementById("email").value,
+            subject: document.getElementById("subject").value,
+            cost: document.getElementById("cost").value,
+            rate: 1
+        };
+        await createTutorAdmin(info);
+        alert("Репетитор успешно добавлен");
+        window.location.replace(window.location.origin);
+
+
+}
+
+async function createTutorAdmin(data) {
+    let token=localStorage.getItem("token");
+    return await fetch("/admin/createTutor",{
+        method :'POST',
+        headers:{'Authorization': `Bearer ${token}`,
+            'Content-Type':'application/json'},
+        body:JSON.stringify(data)
+    });
+}
+
+
+
+
 async function updateTutor() {
     let token=localStorage.getItem("token");
     return await fetch("/user/updateTutor", {
