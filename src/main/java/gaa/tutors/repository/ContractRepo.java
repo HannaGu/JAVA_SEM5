@@ -17,6 +17,7 @@ public interface ContractRepo extends JpaRepository<ContractForm, Long> {
     @Modifying
     void deleteById(Long id);
     @Modifying
+    @Transactional
     @Query("delete from ContractForm c where c.tutor.id=:tutor_id")
     void deleteByTutorId(@Param("tutor_id") Long id) throws RepositoryException;
 

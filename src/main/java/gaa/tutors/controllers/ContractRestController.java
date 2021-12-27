@@ -4,6 +4,7 @@ import gaa.tutors.dto.ContractRequest;
 import gaa.tutors.dto.ContractRequestNoId;
 import gaa.tutors.dto.TutorRequest;
 import gaa.tutors.exceptions.ControllerException;
+import gaa.tutors.exceptions.RepositoryException;
 import gaa.tutors.jwt.JwtFilter;
 import gaa.tutors.jwt.JwtProvider;
 import gaa.tutors.models.ContractForm;
@@ -35,6 +36,9 @@ public class ContractRestController {
     private ContractService contractService;
 
     @Autowired
+    private ContractRepo contractRepository;
+
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
 
@@ -56,12 +60,12 @@ public class ContractRestController {
         }
     }
 
-    @DeleteMapping("/admin/deleteTutorById")
-    public ResponseEntity<?> deleteTutorById(@RequestBody TutorRequest tutorRequest)throws ControllerException {
+    @DeleteMapping("/admin/deleteContractByTutorId")
+    public ResponseEntity<?> deleteContractByTutorId(@RequestBody TutorRequest tutorRequest)throws ControllerException {
         try {
-            tutorService.deleteById(tutorRequest.getId());
+            contractRepository.deleteByTutorId(tutorRequest.getId());
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ServiceException e) {
+        } catch (ServiceException | RepositoryException e) {
             throw new ControllerException(e);
 
         }

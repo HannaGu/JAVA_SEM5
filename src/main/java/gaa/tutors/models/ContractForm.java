@@ -1,6 +1,7 @@
 package gaa.tutors.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Data
 @Getter
 @Setter
-
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class ContractForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

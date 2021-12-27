@@ -139,10 +139,14 @@ async function updateTutor() {
     });
 }
 
-
+//TODO
 async function adminDeleteTutor(id){
     let token = localStorage.getItem('token');
+    await deleteContractByTutorId(id, token);
     await deleteTutorById(id, token);
+    alert("Репетитор успешно удален");
+    window.location.replace(window.location.origin);
+
 }
 
 async function deleteTutorById(data, token) {
@@ -154,5 +158,16 @@ async function deleteTutorById(data, token) {
         },
         body: JSON.stringify(data)
 
+    });
+}
+
+async function deleteContractByTutorId(data, token) {
+    return await fetch("/admin/deleteContractByTutorId", {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
     });
 }
