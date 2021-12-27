@@ -45,3 +45,9 @@ function label(innerHtml) {
 function br() {
     return document.createElement('br');
 }
+
+function table(innerHtml) {
+    let table= document.createElement('table')
+    table.innerHTML=innerHtml;
+    return table;
+}

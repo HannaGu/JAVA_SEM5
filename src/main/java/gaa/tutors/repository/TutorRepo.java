@@ -15,14 +15,22 @@ import org.springframework.stereotype.Repository;
      Tutor getById(Long id);
      boolean existsById(Long id);
 
+  @Modifying
+  @Query("update Tutor t set t.rate=:rate where t.id=:id")
+  void updateTutorRateById(
+          @Param("id") Long id,
+          @Param("rate") float rate
+  ) throws RepositoryException;
+
      @Modifying
-     @Query("update Tutor t set t.name=:name, t.surname=:surname, t.email=:email, t.subject=:subject, t.costPerHour=:cost where t.id=:id")
+     @Query("update Tutor t set t.name=:name, t.surname=:surname, t.email=:email, t.subject=:subject, t.cost=:cost, t.rate=:rate where t.id=:id")
      void updateTutorById(
              @Param("id") Long id,
              @Param("name") String name,
              @Param("surname") String surname,
              @Param("email") String email,
              @Param("subject") String subject,
-             @Param("cost") int cost
+             @Param("cost") int cost,
+             @Param("rate") float rate
      ) throws RepositoryException;
  }

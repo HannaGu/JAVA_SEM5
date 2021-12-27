@@ -9,12 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegistrationRequest {
-  //   @NotEmpty
-    private String login;
-
-    //@NotEmpty
-    private String password;
-
-    //@NotEmpty
-    private String email;
+   private String login;
+   private String password;
+   private String email;
+   private String name;
+   private String surname;
 }

@@ -1,3 +1,4 @@
+
 async function getAllUsers() {
     return await fetch("/users", {
         method: "POST",
@@ -44,4 +45,16 @@ async function authorizedUser(token) {
             'Authorization': `Bearer ${token}`
         }
     });
+}
+
+
+async function getUserInfo(token){
+    fetch('/getUserInfo',{
+        headers:{'Authorization': `Bearer ${token}`}
+    })
+        .then(result=>{
+            if(result.ok){
+                return result.json()
+            }
+        })
 }

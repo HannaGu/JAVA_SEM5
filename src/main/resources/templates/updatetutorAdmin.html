@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="../../static/js/api/tutor_api.js" th:src="@{../js/api/tutor_api.js}"></script>
+<script src="../../static/js/api/updatetutor_api.js" th:src="@{../js/api/updatetutor_api.js}"></script>
+<script>
+    window.onload = onUpdateTutorLoad;
+</script>
+
+UPDATE TUTOR
+<div id="tutorData"></div>
+<button onclick="updateTutor()">Изменить</button>
+<div id="errMes"></div>
+</body>
+</html>

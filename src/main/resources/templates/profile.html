@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<script src="../../static/js/api/profile_api.js" th:src="@{../js/api/profile_api.js}"></script>
+<script src="../../static/js/api/user.js" th:src="@{../js/api/user.js}"></script>
+<script>
+    window.onload = onProfileLoad;
+</script>
+
+
+PROFILE
+<div id="userInfo">
+    <button onclick="updateProfile()">Обновить</button>
+</div>
+<p>Мои репетиторы</p>
+<div id="myTutors">
+<table id="myTutorsTable">
+    <tr>
+        <td>Репетитор</td>
+        <td></td>
+        <td>Почта</td>
+        <td>Предмет</td>
+        <td>Часы</td>
+        <td>Сумма (USD)</td>
+        <td>Оценка</td>
+        <td>Отзыв</td>
+    </tr>
+</table>
+</div>
+
+<!--<p>Мои студенты</p>
+<div id="myStudents"></div>-->
+
+</body>
+</html>

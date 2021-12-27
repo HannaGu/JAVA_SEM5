@@ -27,9 +27,11 @@ async function reg() {
     let password = document.getElementById("password").value;
     let email = document.getElementById("email").value;
     let mes = document.getElementById("message");
-    let result = validateLoginPass(login, password , email);
+    let name = document.getElementById("name").value;
+    let surname = document.getElementById("surname").value;
+    let result = await validateLoginPass(login, password , email);
     if (result === true) {
-        let data = {login: login, password: password,email:email};
+        let data = {login: login, password: password,email:email, name:name, surname:surname};
         let res = await regUser(data);
         if (res.ok) {
             window.location.replace(window.location.origin);

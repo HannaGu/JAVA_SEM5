@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{css/index.css}">
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">-->
     <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
     <!--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -17,71 +17,73 @@
             crossorigin="anonymous"></script>
 </head>
 <br>
-<script src="../static/js/index.js" th:src="@{../js/index.js}"></script>
-<script src="../static/js/elems.js" th:src="@{../js/elems.js}"></script>
-<script src="../static/js/api/user_rent_api.js" th:src="@{../js/api/user_rent_api.js}"></script>
-<script src="../static/js/api/scooter_api.js" th:src="@{../js/api/scooter_api.js}"></script>
-<script src="../static/js/api/user.js" th:src="@{../js/api/user.js}"></script>
-<script src="../static/js/admin.js" th:src="@{../js/admin.js}"></script>
-<script src="../static/js/general.js" th:src="@{../js/general.js}"></script>
-<script src="../static/js/user.js" th:src="@{../js/user.js}"></script>
+<script src="../../static/js/index.js" th:src="@{../js/index.js}"></script>
+<script src="../../static/js/elems.js" th:src="@{../js/elems.js}"></script>
+<script src="../../static/js/api/user_rent_api.js" th:src="@{../js/api/user_rent_api.js}"></script>
+<script src="../../static/js/api/user.js" th:src="@{../js/api/user.js}"></script>
+<script src="../../static/js/api/order_api.js" th:src="@{../js/api/order_api.js}"></script>
+<script src="../../static/js/api/tutor_api.js" th:src="@{../js/api/tutor_api.js}"></script>
+<script src="../../static/js/admin.js" th:src="@{../js/admin.js}"></script>
+<script src="../../static/js/general.js" th:src="@{../js/general.js}"></script>
+<script src="../../static/js/user.js" th:src="@{../js/user.js}"></script>
 <script>
-    window.onload = load;
+    window.onload = onIndexLoad;
 </script>
 
-<div class="background">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="container">
-        <h3>Tutor search</h3>
-        <div class="row">
 
-            <div class="col-sm">
-                <div class="results">
 
-                </div>
-                <div class="nextPrev">
+<button onclick="logOut()">Logout</button>
+</br>
+<div id="refsForUser"></div>
 
-                </div>
-                <div class="logOut">
-
-                </div>
-                <div class="logReg">
-
-                </div>
-            </div>
-            <div class="col-sm">
-                <input type="hidden">
-                <div class="personalInfo">
-
-                </div>
-                <div class="create">
-
-                </div>
-                <div class="update">
-
-                </div>
-                <div class="delete">
-
-                </div>
-                <div class="search">
-
-                </div>
-                <div id="errMes">
-
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="someList">
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="neededInfo">
-
-    </div>
-
+<div>
+    <p>Фильтр</p>
+    По оценке:
+<select name="rates" id="rateFilter">
+    <option value="highFirst">Сначала высокие</option>
+    <option value="lowFirst">Сначала низкие</option>
+</select>
+    По цене:
+    <select name="costs" id="costFilter">
+        <option value="highcostFirst">Сначала высокая</option>
+        <option value="lowcostFirst">Сначала низкая</option>
+    </select>
 </div>
+</br>
+
+<div id="search">
+<input type="text" id="searchTutor" placeholder="Имя/фамилия/предмет">
+</div>
+<p id="searchResults"></p>
+
+</br>
+<!--<table>
+    <tr>
+        <td>Репетитор</td>
+        <td></td>
+        <td>Предмет</td>
+        <td>Почта</td>
+        <td>Оплата в час (USD)</td>
+        <td>Оценка</td>
+    </tr>
+    <tr th:each="tutor : ${tutors}">
+        <td th:text="${tutor.name}"></td>
+        <td th:text="${tutor.surname}"></td>
+        <td th:text="${tutor.subject}"></td>
+        <td th:text="${tutor.email}"></td>
+        <td th:text="${tutor.cost}"></td>
+        <td th:text="${tutor.rate}"></td>
+        <td><a th:href="'/orderPage/'+${tutor.id}">Заказать</a></td>
+    </tr>
+</table>-->
+
+<div id="allTutorsContainer">
+<table id="allTutors">
+</table>
+</div>
+
+<script>
+    let rateSelect=document.getElementById('rateFilter');
+    rateSelect.addEventListener("change", rateChangeOption);
+</script>
 </html>

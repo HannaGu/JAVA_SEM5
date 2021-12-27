@@ -28,5 +28,8 @@ public interface ITutorService {
             String surname,
             String email,
             String subject,
-            int cost)throws ServiceException;
+            int cost,
+            float rate)throws ServiceException;
+    @Transactional
+    void updateTutorRateById(Long id, float rate)throws ServiceException;
 }

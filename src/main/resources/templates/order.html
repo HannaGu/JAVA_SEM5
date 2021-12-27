@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="../../static/js/api/order_api.js" th:src="@{../js/api/order_api.js}"></script>
+<script src="../../static/js/api/tutor_api.js" th:src="@{../js/api/tutor_api.js}"></script>
+<script>
+    window.onload = onOrderLoad;
+</script>
+
+ORDER
+<div id="tutorInfo"></div>
+<p id="costPerHour"></p>
+<input type="number" placeholder="Количество часов" id="orderHours"></input>
+
+<button onclick="createContract()">Заказать</button>
+
+<div id="errorMessage"></div>
+
+</body>
+</html>

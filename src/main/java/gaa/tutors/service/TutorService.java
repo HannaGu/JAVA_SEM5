@@ -49,9 +49,19 @@ public class TutorService implements ITutorService {
     }
 
       @Override
-    public void updateTutorById( Long id, String name, String surname, String email, String subject, int cost) throws ServiceException{
+    public void updateTutorById( Long id, String name, String surname, String email, String subject, int cost, float rate) throws ServiceException{
         try {
-            tutorRepository.updateTutorById(id, name, surname, email, subject, cost);
+            tutorRepository.updateTutorById(id, name, surname, email, subject, cost, rate);
+        } catch (RepositoryException ex) {
+            throw new ServiceException(ex.getMessage());
+
+        }
+    }
+
+    @Override
+    public void updateTutorRateById( Long id, float rate) throws ServiceException{
+        try {
+            tutorRepository.updateTutorRateById(id, rate);
         } catch (RepositoryException ex) {
             throw new ServiceException(ex.getMessage());
 

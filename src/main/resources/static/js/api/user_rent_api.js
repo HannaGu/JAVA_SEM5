@@ -1,14 +1,4 @@
-async function deleteByUserIdAndComputerStuffId(data,token) {
-    return await fetch("/admin/deleteByUserIdAndComputerStuffId",{
-        method :'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'content-type': 'application/json'
-        },
-        body:JSON.stringify(data)
 
-    });
-}
 async function setUserRentFormById(data,token) {
     return await fetch("/admin/setUserRentFormById",{
         method :'PUT',

@@ -1,65 +1,184 @@
-async function genUserSearchButton() {
+async function generateSearch() {
     let token = localStorage.getItem('token');
-    let inputResult = document.getElementById('searchPatientCard').value;
+    let inputResult_origin = document.getElementById('searchTutor').value;
+    let inputResult=inputResult_origin;
+    if(inputResult_origin.length>0){
+     inputResult = inputResult_origin[0].toUpperCase() + inputResult_origin.slice(1);}
+    let list = document.getElementById('allTutors');
+    list.innerHTML = '';
     if(inputResult.length===0){
-        await genListOfCompStuffForUser();
+        await loadTutors();
     }else{
-        let someList = document.querySelector('.someList');
-        someList.innerHTML = '';
-        let listProject = await getAllCompsForUser(token);
-
+        let listProject = await getAllTutors(token);
+        let searchResults=document.getElementById('searchResults');
+        //searchResults.innerHTML='Результаты поиска: ';
+        list.innerHTML+=`<tr>
+        <td>Репетитор</td>
+        <td></td>
+        <td>Предмет</td>
+        <td>Почта</td>
+        <td>Оплата в час (USD)</td>
+        <td>Оценка</td>
+    </tr>`;
         for (let i = 0; i < listProject.length; i++) {
-            let genDiv = div();
-            if (inputResult === listProject[i]['name'] || inputResult === listProject[i]['description']) {
-                let genP1 = p(listProject[i]['name'] + ' ' + listProject[i]['description'] + ' ' + listProject[i]['cost']);
-                let genBut = buttonWithParams('get');
-
-                genBut.onclick = async () => {
-                    await getCertainCompUser(listProject[i]);
-                };
-                genDiv.appendChild(genP1);
-                genDiv.appendChild(genBut);
-                someList.appendChild(genDiv);
-            }
+            if (inputResult === listProject[i]['name']|| inputResult === listProject[i]['surname']|| inputResult === listProject[i]['subject']) {
+               list.innerHTML+=`<tr>
+                <td>${listProject[i]['name']}</td>
+                <td>${listProject[i]['surname']}</td>
+                <td>${listProject[i]['subject']}</td>
+                <td>${listProject[i]['email']}</td>
+                <td>${listProject[i]['cost']}</td>
+                <td>${listProject[i]['rate']}</td>
+                <td><a href="/orderPage/+${listProject[i]['id']}">Заказать</a></td>
+                </tr>
+                `;}
         }
+        if(list.innerHTML==='')
+            searchResults.innerHTML+='ничего не найдено';
+
     }
 }
-async function userSearch() {
 
-    let search = document.querySelector('.search');
-    let searchButton = button(await genUserSearchButton, 'Search');
-    let searchPatientCard = input('text','searchPatientCard','computer name');
-    searchButton.id = 'docCreateButton';
-    search.appendChild(searchPatientCard);
-    search.appendChild(searchButton);
+async function generateSearchForAdmin() {
+    let token = localStorage.getItem('token');
+    let inputResult_origin = document.getElementById('searchTutor').value;
+    let inputResult=inputResult_origin;
+    if(inputResult_origin.length>0){
+        inputResult = inputResult_origin[0].toUpperCase() + inputResult_origin.slice(1);}
+    let list = document.getElementById('allTutors');
+    list.innerHTML = '';
+    if(inputResult.length===0){
+        await loadTutorsForAdmin();
+    }else{
+        let listProject = await getAllTutorsForAdmin(token);
+        let searchResults=document.getElementById('searchResults');
+        list.innerHTML+=`<tr>
+        <td>Репетитор</td>
+        <td></td>
+        <td>Предмет</td>
+        <td>Почта</td>
+        <td>Оплата в час (USD)</td>
+        <td>Оценка</td>
+    </tr>`;
+        for (let i = 0; i < listProject.length; i++) {
+            if (inputResult === listProject[i]['name']|| inputResult === listProject[i]['surname']|| inputResult === listProject[i]['subject']) {
+                list.innerHTML+=`<tr>
+                <td>${listProject[i]['name']}</td>
+                <td>${listProject[i]['surname']}</td>
+                <td>${listProject[i]['subject']}</td>
+                <td>${listProject[i]['email']}</td>
+                <td>${listProject[i]['cost']}</td>
+                <td>${listProject[i]['rate']}</td>
+                <td><a href="/updatetutorAdmin/+${listProject[i]['id']}">Изменить</a></td>
+                </tr>`;}
+        }
+        if(list.innerHTML==='')
+            searchResults.innerHTML+='ничего не найдено';
+
+    }
 }
-async function load() {
 
-    let result = document.querySelector('.results');
-    await generateListOfUsers(result);
-    genPrev();
-    await genNext();
-
-
+async function onIndexLoad() {
+    let token = localStorage.getItem('token');
     if (await isAuth()) {
-        genLogout();
         if (await isAdmin()) {
-            await genCompStuff();
-            await genAdminCreate();
-            await genAdminUpdate();
-            await genAdminDelete();
-            await genListOfCompStuffForAdmin();
-            await genAdminInfo();
-
-
+            await loadAdminIndex();
+            await loadTutorsForAdmin();
         } else {
-            await genListOfCompStuffForUser();
-            await userSearch();
-            await genUserInfo();
+            await loadUserIndex();
+            await loadTutors();
         }
     } else {
         genLogReg(result);
-
     }
+}
 
+async function loadUserIndex(){
+    let hrefs=document.getElementById('refsForUser');
+    let myProfileHref= await a('profile', 'Мой профиль');
+    let myTutorsHrefs=await a('addtutor','Добавить объявление');
+    let search=document.getElementById('search');
+    let searchButton=await button( generateSearch,'Поиск');
+    hrefs.appendChild(myProfileHref);
+    hrefs.appendChild(await br());
+    hrefs.appendChild(myTutorsHrefs);
+    hrefs.appendChild(await br());
+    search.appendChild(searchButton);
+}
+
+//TODO
+async function loadAdminIndex(){
+    let search=document.getElementById('search');
+    let searchButton=await button( generateSearchForAdmin,'Поиск');
+    search.appendChild(searchButton);
+
+}
+
+
+async function loadTutors(){
+    let token = localStorage.getItem('token');
+    let list = document.getElementById('allTutors');
+    list.innerHTML = '';
+    let listProject = await getAllTutors(token);
+    list.innerHTML+=`<tr>
+        <td>Репетитор</td>
+        <td></td>
+        <td>Предмет</td>
+        <td>Почта</td>
+        <td>Оплата в час (USD)</td>
+        <td>Оценка</td>
+    </tr>`;
+    for (let i = 0; i < listProject.length; i++) {
+        list.innerHTML+=`<tr>
+                <td>${listProject[i]['name']}</td>
+                <td>${listProject[i]['surname']}</td>
+                <td>${listProject[i]['subject']}</td>
+                <td>${listProject[i]['email']}</td>
+                <td>${listProject[i]['cost']}</td>
+                <td>${listProject[i]['rate']}</td>
+                <td><a href="/orderPage/+${listProject[i]['id']}">Заказать</a></td>
+                </tr>
+    `;}
+}
+
+
+async function loadTutorsForAdmin(){
+    let token = localStorage.getItem('token');
+    let list = document.getElementById('allTutors');
+    list.innerHTML = '';
+
+    let listProject = await getAllTutorsForAdmin(token);
+    list.innerHTML+=`<tr>
+        <td>Репетитор</td>
+        <td></td>
+        <td>Предмет</td>
+        <td>Почта</td>
+        <td>Оплата в час (USD)</td>
+        <td>Оценка</td>
+    </tr>`;
+    for (let i = 0; i < listProject.length; i++) {
+        list.innerHTML+=`<tr>
+                <td>${listProject[i]['name']}</td>
+                <td>${listProject[i]['surname']}</td>
+                <td>${listProject[i]['subject']}</td>
+                <td>${listProject[i]['email']}</td>
+                <td>${listProject[i]['cost']}</td>
+                <td>${listProject[i]['rate']}</td>
+                <td><a href="/updatetutorAdmin/+${listProject[i]['id']}">Изменить</a></td>
+                </tr>
+    `;}
+}
+
+
+
+function rateChangeOption(){
+    let rateSelect = document.getElementById('rateFilter');
+    let selectedOption = rateSelect.options[rateSelect.selectedIndex];
+     if(selectedOption.label==='Сначала низкие'){
+        let sortedRows = Array.from(allTutors.rows)
+            .slice(1)
+            .sort((rowA, rowB) => rowA.cells[5].innerHTML > rowB.cells[5].innerHTML ? 1 : -1);
+
+         allTutors.tBodies[0].append(sortedRows);
+    }
 }

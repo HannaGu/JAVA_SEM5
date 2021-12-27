@@ -188,3 +188,86 @@ async function genUserInfo() {
     info.appendChild(table);
 
 }
+
+
+
+///----------------------------------------------
+async function getCertainTutor(listProjectElement) {
+    let token = localStorage.getItem('token');
+
+    let userData = await getUserByToken(token);
+    let text = await userData.text();
+    let user = JSON.parse(text);
+
+    let tutor = await getTutorById(listProjectElement['id'], token);
+
+    await genTutorCard();
+    await genTutorCardCreate(user,tutor);
+}
+
+async function genTutorCard() {
+    let token = localStorage.getItem('token');
+    let info = document.querySelector(".personalInfo");
+    info.innerHTML='';
+    let hours = input('text', 'hours', 'Количество часов', '');
+    //let surname = input('text', '', 'Surname', 'surnameValue');
+    info.appendChild(hours);
+   // info.appendChild(surname);
+
+}
+async function genTutorCardCreate(user, tutor) {
+    let create = document.querySelector('.create');
+    create.innerHTML='';
+    let createButton = buttonWithParams('Create');
+    createButton.onclick = async () => {
+        await genTutorCreateButton(user, tutor);
+    };
+    createButton.id = 'patientCreateButton';
+    create.appendChild(createButton);
+}
+
+async function genTutorCreateButton(user , tutor) {
+    let token = localStorage.getItem('token');
+    let userData = await getUserByToken(token);
+    let text = await userData.text();
+    let userTextData = JSON.parse(text);
+    //TODO
+   // let isNotExist = await isContractExistByUserId({id: userTextData['id']}, token);
+    let errMes = document.getElementById('errMes');
+
+    if (validateTutorCard() && await isAuth() ) {
+        let hours = document.getElementById('hours').value;
+        // surname = document.getElementById('surname').value;
+
+        let data = {
+            user:user,
+            name: hours,
+            //surname: surname,
+            tutor:tutor
+        };
+       await createContract(data, token);
+
+        errMes.innerHTML = 'Created';
+        //TODO
+        await genUserInfo();
+    } else {
+        errMes.innerHTML = 'Not all fields are correct or user already got some rent';
+    }
+}
+
+function validateTutorCard() {
+    let nameL = document.getElementById('name').value.length;
+    let surnameL = document.getElementById('surname').value.length;
+    if (!(nameL >= 2 && nameL <= 16)) {
+        return false;
+    }
+    if (!(surnameL >= 4 && surnameL <= 16)) {
+        return false;
+    }
+    return true;
+}
+
+
+
+
+

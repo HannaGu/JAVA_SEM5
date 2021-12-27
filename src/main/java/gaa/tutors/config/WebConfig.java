@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ClassLoaderTemplateResolver templateResolver(){
         var templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("templates/WEB-INF/");
+        templateResolver.setPrefix("templates/");
         templateResolver.setCacheable(false);
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
@@ -42,11 +42,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
+        registry.addViewController("/orderPage/{id}").setViewName("order");
         registry.addViewController("/reg").setViewName("registration");
         registry.addViewController("/loginin").setViewName("login");
         registry.addViewController("/register").setViewName("registrationPage");
-        registry.addViewController("/user/index").setViewName("usrindex");
-        registry.addViewController("/admin/index").setViewName("admindex");
+        registry.addViewController("/profile").setViewName("profile");
+        registry.addViewController("/addtutor").setViewName("addtutor");
+        registry.addViewController("/updatetutorAdmin/{id}").setViewName("updatetutorAdmin");
     }
 
 }
