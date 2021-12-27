@@ -70,7 +70,7 @@ async function generateSearchForAdmin() {
                 <td>${listProject[i]['cost']}</td>
                 <td>${listProject[i]['rate']}</td>
                 <td><a href="/updatetutorAdmin/+${listProject[i]['id']}">Изменить</a></td>
-                <td><button onclick="adminDeleteTutor(${listProject[i]['id']})"></button></td>
+                <td><button onclick="adminDeleteTutor(${listProject[i]['id']})">Удалить</button></td>
                 </tr>`;}
         }
         if(list.innerHTML==='')
@@ -169,7 +169,7 @@ async function loadTutorsForAdmin(){
                 <td>${listProject[i]['cost']}</td>
                 <td>${listProject[i]['rate']}</td>
                 <td><a href="/updatetutorAdmin/+${listProject[i]['id']}">Изменить</a></td>
-                <td><button onclick="adminDeleteTutor(${listProject[i]['id']})"></button></td>
+                <td><button onclick="adminDeleteTutor(${listProject[i]['id']})">Удалить</button></td>
                 </tr>
     `;}
 }

@@ -60,10 +60,10 @@ public class ContractRestController {
         }
     }
 
-    @DeleteMapping("/admin/deleteContractByTutorId")
-    public ResponseEntity<?> deleteContractByTutorId(@RequestBody TutorRequest tutorRequest)throws ControllerException {
+    @DeleteMapping("/admin/deleteContractByTutorId/{id}")
+    public ResponseEntity<?> deleteContractByTutorId(@PathVariable(name="id")Long id)throws ControllerException {
         try {
-            contractRepository.deleteByTutorId(tutorRequest.getId());
+            contractRepository.deleteByTutorId(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ServiceException | RepositoryException e) {
             throw new ControllerException(e);

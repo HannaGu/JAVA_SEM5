@@ -149,25 +149,23 @@ async function adminDeleteTutor(id){
 
 }
 
-async function deleteTutorById(data, token) {
-    return await fetch("/admin/deleteTutorById", {
+async function deleteTutorById(id, token) {
+    if(confirm('Уверены, что хотите удалить выбранный объект?')){
+    return await fetch(`/admin/deleteTutorById/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`,
             'content-type': 'application/json'
         },
-        body: JSON.stringify(data)
-
-    });
+    });}
 }
 
-async function deleteContractByTutorId(data, token) {
-    return await fetch("/admin/deleteContractByTutorId", {
+async function deleteContractByTutorId(id, token) {
+    return await fetch(`/admin/deleteContractByTutorId/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`,
             'content-type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        }
     });
 }

@@ -143,10 +143,10 @@ public class TutorRestController {
         }
     }
 
-    @DeleteMapping("/admin/deleteTutorById")
-    public ResponseEntity<?> deleteTutorById(@RequestBody TutorRequest tutorRequest)throws ControllerException {
+    @DeleteMapping("/admin/deleteTutorById/{id}")
+    public ResponseEntity<?> deleteTutorById(@PathVariable(name="id")Long id)throws ControllerException {
         try {
-            tutorService.deleteById(tutorRequest.getId());
+            tutorService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ServiceException e) {
             throw new ControllerException(e);
