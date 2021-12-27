@@ -1,105 +1,3 @@
-async function genCard() {
-    let token = localStorage.getItem('token');
-    let info = document.querySelector(".personalInfo");
-    info.innerHTML='';
-
-
-    let name = input('text', 'name', 'Name', '');
-
-    let surname = input('text', 'surname', 'Surname', 'surnameValue');
-
-
-    info.appendChild(name);
-    info.appendChild(surname);
-
-}
-
-function validateCard() {
-    let nameL = document.getElementById('name').value.length;
-    let surnameL = document.getElementById('surname').value.length;
-
-
-    if (!(nameL >= 2 && nameL <= 16)) {
-        return false;
-    }
-    if (!(surnameL >= 4 && surnameL <= 16)) {
-        return false;
-    }
-
-    return true;
-
-}
-
-async function genUserCreateButton(user , Scooter) {
-    let token = localStorage.getItem('token');
-    let userData = await getUserByToken(token);
-    let text = await userData.text();
-    let userTextData = JSON.parse(text);
-    let isNotExist = await isUserRentExistByUserId({id: userTextData['id']}, token);
-    let errMes = document.getElementById('errMes');
-
-    if (validateCard() && await isAuth() && isNotExist.ok) {
-        let name = document.getElementById('name').value;
-        let surname = document.getElementById('surname').value;
-
-        let data = {
-            user:user,
-            name: name,
-            surname: surname,
-            scooter:Scooter
-        };
-        await createUserRent(data, token);
-
-        errMes.innerHTML = 'Created';
-        await genUserInfo();
-    } else {
-        errMes.innerHTML = 'Not all fields are correct or user already got some rent';
-    }
-
-}
-
-async function genCardCreate(user, comp) {
-    let create = document.querySelector('.create');
-    create.innerHTML='';
-    let createButton = buttonWithParams('Create');
-    createButton.onclick = async () => {
-        await genUserCreateButton(user,comp);
-    };
-    createButton.id = 'patientCreateButton';
-    create.appendChild(createButton);
-}
-async function getCertainCompUser(listProjectElement) {
-    let token = localStorage.getItem('token');
-
-    let userData = await getUserByToken(token);
-    let text = await userData.text();
-    let user = JSON.parse(text);
-
-    let comp = await userGetScooterByName(listProjectElement['name'], token);
-
-    await genCard();
-    await genCardCreate(user,comp);
-}
-
-async function genListOfCompStuffForUser() {
-    let token = localStorage.getItem('token');
-    let someList = document.querySelector('.someList');
-    someList.innerHTML = '';
-    let listProject = await getAllCompsForUser(token);
-
-    for (let i = 0; i < listProject.length; i++) {
-        let genDiv = div();
-        let genP1 = p(listProject[i]['name'] + ' ' + listProject[i]['description'] + ' ' + listProject[i]['cost']);
-        let genBut = buttonWithParams('get');
-
-        genBut.onclick = async () => {
-            await getCertainCompUser(listProject[i]);
-        };
-        genDiv.appendChild(genP1);
-        genDiv.appendChild(genBut);
-        someList.appendChild(genDiv);
-    }
-}
 async function genUserInfo() {
     let token = localStorage.getItem('token');
     let info = document.querySelector('.neededInfo');
@@ -190,84 +88,35 @@ async function genUserInfo() {
 }
 
 
-
-///----------------------------------------------
-async function getCertainTutor(listProjectElement) {
+async function adminDeleteUser(id){
     let token = localStorage.getItem('token');
-
-    let userData = await getUserByToken(token);
-    let text = await userData.text();
-    let user = JSON.parse(text);
-
-    let tutor = await getTutorById(listProjectElement['id'], token);
-
-    await genTutorCard();
-    await genTutorCardCreate(user,tutor);
-}
-
-async function genTutorCard() {
-    let token = localStorage.getItem('token');
-    let info = document.querySelector(".personalInfo");
-    info.innerHTML='';
-    let hours = input('text', 'hours', 'Количество часов', '');
-    //let surname = input('text', '', 'Surname', 'surnameValue');
-    info.appendChild(hours);
-   // info.appendChild(surname);
+    await deleteContractByTutorId(id, token);
+    await deleteTutorById(id, token);
+    alert("Репетитор успешно удален");
+    window.location.replace(window.location.origin);
 
 }
-async function genTutorCardCreate(user, tutor) {
-    let create = document.querySelector('.create');
-    create.innerHTML='';
-    let createButton = buttonWithParams('Create');
-    createButton.onclick = async () => {
-        await genTutorCreateButton(user, tutor);
-    };
-    createButton.id = 'patientCreateButton';
-    create.appendChild(createButton);
+
+async function deleteTutorById(id, token) {
+    if(confirm('Уверены, что хотите удалить выбранный объект?')){
+        return await fetch(`/admin/deleteTutorById/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'content-type': 'application/json'
+            },
+        });}
 }
 
-async function genTutorCreateButton(user , tutor) {
-    let token = localStorage.getItem('token');
-    let userData = await getUserByToken(token);
-    let text = await userData.text();
-    let userTextData = JSON.parse(text);
-    //TODO
-   // let isNotExist = await isContractExistByUserId({id: userTextData['id']}, token);
-    let errMes = document.getElementById('errMes');
-
-    if (validateTutorCard() && await isAuth() ) {
-        let hours = document.getElementById('hours').value;
-        // surname = document.getElementById('surname').value;
-
-        let data = {
-            user:user,
-            name: hours,
-            //surname: surname,
-            tutor:tutor
-        };
-       await createContract(data, token);
-
-        errMes.innerHTML = 'Created';
-        //TODO
-        await genUserInfo();
-    } else {
-        errMes.innerHTML = 'Not all fields are correct or user already got some rent';
-    }
+async function deleteContractByTutorId(id, token) {
+    return await fetch(`/admin/deleteContractByTutorId/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'content-type': 'application/json'
+        }
+    });
 }
-
-function validateTutorCard() {
-    let nameL = document.getElementById('name').value.length;
-    let surnameL = document.getElementById('surname').value.length;
-    if (!(nameL >= 2 && nameL <= 16)) {
-        return false;
-    }
-    if (!(surnameL >= 4 && surnameL <= 16)) {
-        return false;
-    }
-    return true;
-}
-
-
 
 
 

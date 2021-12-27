@@ -54,32 +54,22 @@
 <div id="search">
 <input type="text" id="searchTutor" placeholder="Имя/фамилия/предмет">
 </div>
-<p id="searchResults"></p>
-
 </br>
-<!--<table>
-    <tr>
-        <td>Репетитор</td>
-        <td></td>
-        <td>Предмет</td>
-        <td>Почта</td>
-        <td>Оплата в час (USD)</td>
-        <td>Оценка</td>
-    </tr>
-    <tr th:each="tutor : ${tutors}">
-        <td th:text="${tutor.name}"></td>
-        <td th:text="${tutor.surname}"></td>
-        <td th:text="${tutor.subject}"></td>
-        <td th:text="${tutor.email}"></td>
-        <td th:text="${tutor.cost}"></td>
-        <td th:text="${tutor.rate}"></td>
-        <td><a th:href="'/orderPage/'+${tutor.id}">Заказать</a></td>
-    </tr>
-</table>-->
 
 <div id="allTutorsContainer">
 <table id="allTutors">
 </table>
+</div>
+
+<div id="searchUser">
+    <input type="text" id="searchTutorUser" placeholder="Имя/фамилия/предмет">
+</div>
+</br>
+
+
+<div id="allUsersContainer">
+    <table id="allUsers">
+    </table>
 </div>
 
 <script>

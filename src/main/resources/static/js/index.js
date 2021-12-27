@@ -85,6 +85,7 @@ async function onIndexLoad() {
         if (await isAdmin()) {
             await loadAdminIndex();
             await loadTutorsForAdmin();
+            await loadUsersForAdmin();
         } else {
             await loadUserIndex();
             await loadTutors();
@@ -93,6 +94,9 @@ async function onIndexLoad() {
         genLogReg(result);
     }
 }
+
+async function generateUserSearchForAdmin(){}
+
 
 async function loadUserIndex(){
     let hrefs=document.getElementById('refsForUser');
@@ -110,11 +114,18 @@ async function loadUserIndex(){
 
 async function loadAdminIndex(){
     let search=document.getElementById('search');
+    let searchUser=document.getElementById('searchUser');
+    searchUser.innerHTML=`<input type="text" id="searchUserAdmin" placeholder="Имя/фамилия/логин">`;
     let tutorContainer=document.getElementById('allTutorsContainer');
+    let userContainer=document.getElementById('allUsersContainer');
     let searchButton=await button( generateSearchForAdmin,'Поиск');
+    let searchUserButton=await button( generateUserSearchForAdmin,'Поиск');
     let createHref=await a( 'addtutoradmin','Добавить репетитора');
+    let createHrefUser=await a( 'adduseradmin','Добавить пользователя');
     search.appendChild(searchButton);
+    searchUser.appendChild(searchUserButton);
     tutorContainer.appendChild(createHref);
+    userContainer.appendChild(createHrefUser);
 
 }
 
@@ -173,6 +184,34 @@ async function loadTutorsForAdmin(){
                 </tr>
     `;}
 }
+
+
+async function loadUsersForAdmin(){
+    let token = localStorage.getItem('token');
+    let list = document.getElementById('allUsers');
+    list.innerHTML = '';
+    let listProject = await getAllUsers();
+    list.innerHTML+=`<tr>
+        <td>Пользователь</td>
+        <td></td>
+        <td>Логин</td>
+        <td>Почта</td>
+        <td>Роль</td>
+    </tr>`;
+    for (let i = 0; i < listProject.length; i++) {
+        list.innerHTML+=`<tr>
+                <td>${listProject[i]['name']}</td>
+                <td>${listProject[i]['surname']}</td>
+                <td>${listProject[i]['login']}</td>
+                <td>${listProject[i]['email']}</td>
+                <td>${listProject[i].userRole.name}</td>
+                <td><a href="/updateuserAdmin/+${listProject[i]['id']}">Изменить</a></td>
+                <td><button onclick="adminDeleteUser(${listProject[i]['id']})">Удалить</button></td>
+                </tr>
+    `;}
+}
+
+
 
 
 

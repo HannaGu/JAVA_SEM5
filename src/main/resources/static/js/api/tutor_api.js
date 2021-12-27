@@ -139,7 +139,7 @@ async function updateTutor() {
     });
 }
 
-//TODO
+
 async function adminDeleteTutor(id){
     let token = localStorage.getItem('token');
     await deleteContractByTutorId(id, token);
