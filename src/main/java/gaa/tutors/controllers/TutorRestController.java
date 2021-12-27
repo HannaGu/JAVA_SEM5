@@ -1,6 +1,7 @@
 package gaa.tutors.controllers;
 
 import gaa.tutors.dto.ContractRequest;
+import gaa.tutors.dto.TutorRequest;
 import gaa.tutors.dto.TutorRequestRate;
 import gaa.tutors.exceptions.ControllerException;
 import gaa.tutors.jwt.JwtFilter;
@@ -93,6 +94,25 @@ public class TutorRestController {
             tutorService.updateTutorRateById(
                     tutorRequestRate.getId(),
                     tutorRequestRate.getRate()
+            );
+            return new ResponseEntity<>(man, HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+
+        }
+    }
+    @PutMapping("/admin/updateTutor")
+    public ResponseEntity<?> updateTutor(@RequestBody TutorRequest tutorRequest)throws ControllerException {
+        try {
+            Tutor man = tutorService.getById( tutorRequest.getId());
+            tutorService.updateTutorById(
+                    tutorRequest.getId(),
+                    tutorRequest.getName(),
+                    tutorRequest.getSurname(),
+                    tutorRequest.getEmail(),
+                    tutorRequest.getSubject(),
+                    tutorRequest.getCost(),
+                    tutorRequest.getRate()
             );
             return new ResponseEntity<>(man, HttpStatus.OK);
         } catch (ServiceException e) {

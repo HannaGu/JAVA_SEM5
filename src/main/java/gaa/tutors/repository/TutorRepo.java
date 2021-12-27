@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
              @Param("surname") String surname,
              @Param("email") String email,
              @Param("subject") String subject,
-             @Param("cost") int cost,
+             @Param("cost") Long cost,
              @Param("rate") float rate
      ) throws RepositoryException;
  }

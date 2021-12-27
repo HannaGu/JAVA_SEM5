@@ -7,6 +7,7 @@ async function onUpdateTutorLoad(){
     let tutorData=document.getElementById('tutorData');
     tutorData.innerHTML=`
     <input type="hidden" id="id" value="${data.id}"></input>
+    <input type="hidden" id="rate" value="${data.rate}"></input>
     <p>Имя:</p>
     <input id="name" placeholder="Имя" value="${data.name}"> </input>
     <p>Фамилия:</p>
@@ -19,7 +20,7 @@ async function onUpdateTutorLoad(){
     <input id="cost" type="number" placeholder="Цена" value="${data.cost}"></input>`
 }
 
-async function updateTutor(){
+async function updateTutorButton(){
     let errMes = document.getElementById('errMes');
     let token = localStorage.getItem('token');
     let id=document.getElementById('id').value
@@ -28,15 +29,17 @@ async function updateTutor(){
     let cost = document.getElementById('cost').value;
     let email = document.getElementById('email').value;
     let subject = document.getElementById('subject').value;
+    let rate = document.getElementById('rate').value;
 
     if (validateTutor()) {
         await updateTutor({
             id: id,
             name: name,
-            description: description,
+            surname: surname,
+            subject:subject,
+            email:email,
             cost: cost,
-            expirationDate: expirationDate
-
+            rate: rate
         }, token);
         alert( 'Изменение прошло успешно');
     } else {
