@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <script src="../../static/js/api/tutor_api.js" th:src="@{../js/api/tutor_api.js}"></script>
 <script src="../../static/js/api/user.js" th:src="@{../js/api/user.js}"></script>
 
 
-
-ADDTUTORADMIN
-
+<div>
 <input id="name" placeholder="Имя"></input></br>
 <input id="surname" placeholder="Фамилия"></input></br>
 <input id="email" placeholder="Почта"></input></br>
 <input id="subject" placeholder="Предмет"></input></br>
 <input id="cost" type="number" placeholder="Цена в час (USD)"></input></br>
+</div>
 <button onclick="adminAddTutor()">Добавить репетитора</button>
 </body>
 </html>

@@ -77,6 +77,13 @@ async function userAddTutor() {
             subject: document.getElementById("subject").value,
             cost: document.getElementById("cost").value
         };
+            if(ocument.getElementById("subject").value.length===0||ocument.getElementById("cost").value.length===0){
+                document.getElementById('err').innerHTML='Заполните все поля'
+            }
+            if(document.getElementById("cost").value<=0){
+                document.getElementById('err').innerHTML='Цена должно превышать 0';
+            }
+
         createTutor(info);
         alert("Ваше объявление успешно обработано");
         window.location.replace(window.location.origin);

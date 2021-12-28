@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <script th:src="@{../js/reg.js}"></script>
 </head>
 <body>
@@ -15,7 +16,7 @@
 <input type="name" id="name" placeholder="name"><br>
 <input type="surname" id="surname" placeholder="surname"><br>
 <button onclick="reg()" th:method="post">Submit</button><br>
-</div>>
+</div>
 <div id="message"></div>
 </body>
 </html>

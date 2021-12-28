@@ -1,5 +1,5 @@
-let curUrl =  document.URL.split('/')
-let user_id = curUrl[4]
+let curtUrl =  document.URL.split('/')
+let user_id = curtUrl[4]
 
 async function genUserInfo() {
     let token = localStorage.getItem('token');
@@ -95,7 +95,7 @@ async function adminDeleteUser(id){
     let token = localStorage.getItem('token');
     await deleteContractByUserId(id, token);
     await deleteUserById(id, token);
-    alert("Репетитор успешно удален");
+    alert("Пользователь успешно удален");
     window.location.replace(window.location.origin);
 
 }

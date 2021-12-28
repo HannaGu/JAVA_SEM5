@@ -18,12 +18,14 @@ async function onProfileLoad(){
             }
         }).then(data=>{
         userInfo.innerHTML=`
-                <p>Имя:</p>
-                <input id="userName" placeholder="Имя" value="${data.name}"> </input>
-                <p>Фамилия:</p>
-                <input id="userSurname" placeholder="Фамилия" value="${data.surname}"></input>
-                <p>Почта: </p>
-                <input id="userEmail" placeholder="Email" value="${data.email}"></input>`
+                Имя:<br>
+                <input id="userName" placeholder="Имя" value="${data.name}"> <br>
+                Фамилия:<br>
+                <input id="userSurname" placeholder="Фамилия" value="${data.surname}"><br>
+                Почта:<br>
+                <input id="userEmail" placeholder="Email" value="${data.email}"><br>
+                <input type="hidden" id="userId" placeholder="Email" value="${data.id}"></input>
+                <button onclick = 'updateProfile()'>Обновить</button>`
         });
     let userData = await getUserByToken(token);
     let text = await userData.text();
@@ -102,3 +104,43 @@ async function updateTutorRate(data, token) {
 
     });
 }
+
+async function updateProfile(){
+    let token=localStorage.getItem('token');
+    let userId=document.getElementById('userId').value;
+    let userName=document.getElementById('userName').value;
+    let userSurname=document.getElementById('userSurname').value;
+    let userEmail=document.getElementById('userEmail').value;
+    let info={
+        id:userId,
+        name:userName,
+        surname:userSurname,
+        email:userEmail
+    }
+    if(userName.length===0||userSurname.length===0|| userEmail.length===0){
+        document.getElementById('error').innerHTML='Заполните все поля.'}
+    else{
+        await updateUser(info,token);
+        alert("Изменение сохранено");
+        window.location.replace(window.location.origin+'/profile');
+    }
+}
+
+
+async function updateUser(data, token) {
+    return await fetch("/user/updateUserById", {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+
+    });
+}
+
+
+async function profileValidation(name, surname, email){
+    if(name===''||surname===''||email==='')
+        return "Заполните все поля";
+else{return true;}}

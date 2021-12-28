@@ -1,4 +1,6 @@
-function validateLoginPass(login, password , email) {
+function validateLoginPass(login, password , email, name, surname) {
+    if(login===''||password===''||email===''||name===''||surname==='')
+        return "Заполните все поля";
     if (!(login.length >= 4 && login.length <= 20)) {
         return "Длина логина от 4 до 20 символов";
     }
@@ -29,12 +31,12 @@ async function reg() {
     let mes = document.getElementById("message");
     let name = document.getElementById("name").value;
     let surname = document.getElementById("surname").value;
-    let result = await validateLoginPass(login, password , email);
+    let result = await validateLoginPass(login, password , email, name, surname);
     if (result === true) {
         let data = {login: login, password: password,email:email, name:name, surname:surname};
         let res = await regUser(data);
         if (res.ok) {
-            window.location.replace(window.location.origin);
+            window.location.replace(document.location.origin+'/loginin');
         } else {
             mes.innerHTML = "Пользователь с таким логином уже существует";
         }

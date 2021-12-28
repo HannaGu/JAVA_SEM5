@@ -94,7 +94,7 @@ async function onIndexLoad() {
             await loadTutors();
         }
     } else {
-        genLogReg(result);
+        //genLogReg(result);
     }
 }
 
@@ -243,7 +243,6 @@ async function loadUsersForAdmin(){
                 <td>${listProject[i]['login']}</td>
                 <td>${listProject[i]['email']}</td>
                 <td>${listProject[i].userRole.name}</td>
-                <td><a href="/updateuserAdmin/+${listProject[i]['id']}">Изменить</a></td>
                 <td><button onclick='adminDeleteUser(${listProject[i]['id']})'>Удалить</button></td>
                 </tr>
     `;}

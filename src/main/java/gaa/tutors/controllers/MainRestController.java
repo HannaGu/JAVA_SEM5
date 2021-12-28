@@ -1,9 +1,6 @@
 package gaa.tutors.controllers;
 
-import gaa.tutors.dto.AuthRequest;
-import gaa.tutors.dto.AuthResponse;
-import gaa.tutors.dto.RegistrationRequest;
-import gaa.tutors.dto.UserResponse;
+import gaa.tutors.dto.*;
 import gaa.tutors.exceptions.ControllerException;
 import gaa.tutors.jwt.JwtProvider;
 import gaa.tutors.models.Tutor;
@@ -142,4 +139,21 @@ public class MainRestController {
 
         }
     }
-}
+
+
+    @PutMapping("/user/updateUserById")
+    public ResponseEntity<?> updateUserById(@RequestBody UserResponse userResponse)throws ControllerException {
+        try {
+            User man = userService.getById( userResponse.getId());
+            userService.updateUserById(
+                    userResponse.getId(),
+                    userResponse.getName(),
+                    userResponse.getSurname(),
+                    userResponse.getEmail()
+            );
+            return new ResponseEntity<>(man, HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+
+        }
+}}

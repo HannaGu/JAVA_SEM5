@@ -1,7 +1,9 @@
 package gaa.tutors.service.interfaces;
 
 import gaa.tutors.models.User;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,4 +18,12 @@ public interface IUserService{
     User findByLoginAndPassword(String login, String password);
     boolean existsUserByLogin(String login);
     boolean existsUserByLoginAndPassword(String login, String password);
+
+    @Transactional
+    void updateUserById(
+            Long id,
+            String name,
+            String surname,
+            String email
+            )throws ServiceException;
 }

@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script th:src="@{../js/reg.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-ADD USER
+<div>
 <input id="name" placeholder="Имя"></input></br>
 <input id="surname" placeholder="Фамилия"></input></br>
 <input id="email" placeholder="Почта"></input></br>
 <input id="login" placeholder="Логин"></input></br>
 <input id="password" placeholder="Пароль"></input></br>
+    <div>
 <button onclick="reg()">Добавить пользователя</button>
 
 <div id="message"></div>
