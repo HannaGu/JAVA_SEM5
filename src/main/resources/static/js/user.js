@@ -1,6 +1,7 @@
 let curtUrl =  document.URL.split('/')
 let user_id = curtUrl[4]
 
+/*
 async function genUserInfo() {
     let token = localStorage.getItem('token');
     let info = document.querySelector('.neededInfo');
@@ -89,6 +90,7 @@ async function genUserInfo() {
     info.appendChild(table);
 
 }
+*/
 
 
 async function adminDeleteUser(id){

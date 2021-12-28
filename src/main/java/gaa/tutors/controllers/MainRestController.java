@@ -9,6 +9,11 @@ import gaa.tutors.models.User;
 import gaa.tutors.service.UserService;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +36,8 @@ public class MainRestController {
 
      Logger logger = (Logger) LoggerFactory.getLogger(MainRestController.class);
 
-
+    @Operation(summary = "Get all users regardless the role")
+    @ApiResponse(content = {@Content(mediaType = "application/json", schema = @Schema(implementation = User.class))})
     @PostMapping("/users")
     public List<User> getUsers() throws ControllerException {
         try {
@@ -39,11 +45,12 @@ public class MainRestController {
             return userService.findAll();
         } catch (Exception e) {
            logger.error("error get all users");
-
             throw new ControllerException("getUsers", e);
         }
     }
-
+    @Operation(summary = "User authorization method")
+    @ApiResponse(responseCode = "200", description = "User is found", content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = AuthResponse.class))})
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody AuthRequest authRequest) throws ControllerException
     {
@@ -68,7 +75,8 @@ public class MainRestController {
             throw new ControllerException("Ошибка авторизации", e);
         }
     }
-
+    @Operation(summary = "User registration method")
+    @ApiResponse(responseCode = "200", description = "User is registered")
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest)
     {
@@ -88,22 +96,34 @@ public class MainRestController {
             return new ResponseEntity<>(HttpStatus.FOUND);
         }
     }
+    @Operation(summary = "Check if the uses is authorised")
+    @ApiResponse(responseCode = "200", description = "User is authorized")
     @PostMapping("/authorized")
     public ResponseEntity<?> isAuthorized() throws ControllerException {
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    @Operation(summary = "Get user by token")
+    @ApiResponse(responseCode = "200", description = "User is found", content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = User.class))})
     @PostMapping("/getUser")
     public UserResponse getUser(@RequestHeader(name = "Authorisation") String jwt) throws ControllerException {
         try {
             String userName = jwtProvider.getLoginFromToken(jwt.substring(7));
             User user = userService.findByLogin(userName);
-
             return new UserResponse(user.getId(), user.getLogin(), user.getUserRole().getName(), user.getName(), user.getSurname(),user.getEmail());
         } catch (Exception e) {
             throw new ControllerException("getUser", e);
         }
     }
 
+    @Operation(summary = "Get user info by token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User info is found", content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = UserResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "User info is not found")
+    })
     @GetMapping("/getUserInfo")
     public ResponseEntity<?> getUserInfo(@RequestHeader(name = "Authorization") String jwt) throws ControllerException {
         try {
@@ -123,7 +143,9 @@ public class MainRestController {
         }
     }
 
-
+    @Operation(summary = "Get user by id (for admin only)")
+    @ApiResponse(responseCode = "200", description = "User info is found", content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = User.class))})
     @GetMapping("/admin/getUserById/{id}")
     public ResponseEntity<?> getTutorByIdForAdmin(@PathVariable(name="id") Long id)throws ControllerException {
         User stuff = null;
@@ -134,7 +156,8 @@ public class MainRestController {
             throw new ControllerException(e);
         }
     }
-
+    @Operation(summary = "Delete user by id (for admin only)")
+    @ApiResponse(responseCode = "200", description = "User is deleted")
     @DeleteMapping("/admin/deleteUserById/{id}")
     public ResponseEntity<?> deleteTutorById(@PathVariable(name="id")Long id)throws ControllerException {
         try {
@@ -146,7 +169,9 @@ public class MainRestController {
         }
     }
 
-
+    @Operation(summary = "Update user info (for user only)")
+    @ApiResponse(responseCode = "200", description = "User is updated", content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = User.class))})
     @PutMapping("/user/updateUserById")
     public ResponseEntity<?> updateUserById(@RequestBody UserResponse userResponse)throws ControllerException {
         try {

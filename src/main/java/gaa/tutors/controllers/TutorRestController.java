@@ -12,6 +12,8 @@ import gaa.tutors.models.User;
 import gaa.tutors.repository.ContractRepo;
 import gaa.tutors.service.TutorService;
 import org.hibernate.service.spi.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.sql.rowset.serial.SerialException;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @RestController
 public class TutorRestController {
@@ -34,25 +36,25 @@ public class TutorRestController {
     @Autowired
     private MailSender mailSender;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TutorRestController.class);
 
     @PostMapping("/user/getAllTutors")
     public List<Tutor> getTutors() throws ControllerException {
         try {
-            //  logger.debug("getting all users");
             return tutorService.getAll();
         } catch (Exception e) {
-            //  logger.error("error get all users");
-            throw new ControllerException("getUsers", e);
+            LOGGER.error("Error after user/getAllTutors called...");
+             throw new ControllerException("getUsers", e);
         }
     }
 
     @PostMapping("/admin/getAllTutors")
     public List<Tutor> getTutorsForAdmin() throws ControllerException {
         try {
-            //  logger.debug("getting all users");
+            LOGGER.info("admin/getAllTutors called...");
             return tutorService.getAll();
         } catch (Exception e) {
-            //  logger.error("error get all users");
+            LOGGER.error("Error after admin/getAllTutors called...");
             throw new ControllerException("getUsers", e);
         }
     }
@@ -64,6 +66,7 @@ public class TutorRestController {
             stuff = tutorService.getById(id);
             return new ResponseEntity<>(stuff,HttpStatus.OK);
         } catch (ServiceException e) {
+            LOGGER.error("Error after user/getTutorById called...");
             throw new ControllerException(e);
         }
     }
@@ -72,9 +75,11 @@ public class TutorRestController {
     public ResponseEntity<?> getTutorByIdForAdmin(@PathVariable(name="id") Long id)throws ControllerException {
         Tutor stuff = null;
         try {
+            LOGGER.info("admin/getTutorById called...");
             stuff = tutorService.getById(id);
             return new ResponseEntity<>(stuff,HttpStatus.OK);
         } catch (ServiceException e) {
+            LOGGER.error("Error after admin/getTutorById called...");
             throw new ControllerException(e);
         }
     }
@@ -93,6 +98,7 @@ public class TutorRestController {
             mailSender.sendMail(tutorRequestNoId.getEmail(), "Объявление", "Ваше объявление успешно опубликовано");
             return new ResponseEntity<>(tutor, HttpStatus.OK);
         } catch (ServiceException e) {
+            LOGGER.error("Error after user/createTutor called...");
             throw new ControllerException(e);
         }
     }
@@ -107,6 +113,7 @@ public class TutorRestController {
             );
             return new ResponseEntity<>(man, HttpStatus.OK);
         } catch (ServiceException e) {
+            LOGGER.error("Error after user/updateTutorRate called...");
             throw new ControllerException(e);
 
         }
@@ -114,6 +121,7 @@ public class TutorRestController {
     @PutMapping("/admin/updateTutor")
     public ResponseEntity<?> updateTutor(@RequestBody TutorRequest tutorRequest)throws ControllerException {
         try {
+            LOGGER.info("admin/updateTutor called...");
             Tutor man = tutorService.getById( tutorRequest.getId());
             tutorService.updateTutorById(
                     tutorRequest.getId(),
@@ -126,8 +134,8 @@ public class TutorRestController {
             );
             return new ResponseEntity<>(man, HttpStatus.OK);
         } catch (ServiceException e) {
+            LOGGER.error("Error after admin/updateTutor called...");
             throw new ControllerException(e);
-
         }
     }
 
@@ -141,9 +149,11 @@ public class TutorRestController {
                 tutorRequestNoId.getCost(),
                 tutorRequestNoId.getRate());
         try {
+            LOGGER.info("admin/creatTutor called...");
             tutorService.create(tutor);
             return new ResponseEntity<>(tutor, HttpStatus.OK);
         } catch (ServiceException e) {
+            LOGGER.error("Error after admin/createTutor called...");
             throw new ControllerException(e);
         }
     }
@@ -151,11 +161,12 @@ public class TutorRestController {
     @DeleteMapping("/admin/deleteTutorById/{id}")
     public ResponseEntity<?> deleteTutorById(@PathVariable(name="id")Long id)throws ControllerException {
         try {
+            LOGGER.info("admin/deleteTutorById called...");
             tutorService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ServiceException e) {
+            LOGGER.error("Error after admin/deleteTutorById called...");
             throw new ControllerException(e);
-
         }
    }
 

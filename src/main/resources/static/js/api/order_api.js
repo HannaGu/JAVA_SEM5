@@ -21,6 +21,9 @@ function totalCost(){
 
 
 async function createContract(data) {
+    if(document.getElementById("orderHours").value<=0){
+        document.getElementById("errorMessage").innerHTML=`Количество часов должно быть положительным`
+    }else{
     if(confirm(`Итоговая сумма: ${totalCost()}. Заказать?`)){
         fetch('/user/createContract',{
             method:'POST',
@@ -37,5 +40,5 @@ async function createContract(data) {
                 window.location.replace(window.location.origin);
             }
         })
-    }
+    }}
 }
