@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tutor_table")
@@ -17,19 +19,20 @@ public class Tutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+@NotNull
     @Column
     private String name;
-
+    @NotNull
     @Column
     private String surname;
-
+    @NotNull
     @Column
     private String email;
-
+    @NotNull
     @Column
     private String subject;
-
+    @Min(0)
+    @NotNull
     @Column
     private Long cost;
 

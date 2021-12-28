@@ -1,13 +1,18 @@
 package gaa.tutors.controllers;
 
-import gaa.tutors.dto.AuthRequest;
-import gaa.tutors.dto.AuthResponse;
-import gaa.tutors.dto.RegistrationRequest;
-import gaa.tutors.dto.UserResponse;
+import gaa.tutors.dto.*;
 import gaa.tutors.exceptions.ControllerException;
 import gaa.tutors.jwt.JwtProvider;
+import gaa.tutors.models.Tutor;
 import gaa.tutors.models.User;
+
 import gaa.tutors.service.UserService;
+
+
+import org.hibernate.service.spi.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -15,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 public class MainRestController {
@@ -23,17 +27,18 @@ public class MainRestController {
     private UserService userService;
     @Autowired
     private JwtProvider jwtProvider;
+    
 
-   // private static final Logger logger = Logger.getLogger(MainRestController.class);
+     Logger logger = (Logger) LoggerFactory.getLogger(MainRestController.class);
+
 
     @PostMapping("/users")
     public List<User> getUsers() throws ControllerException {
         try {
-          //  logger.debug("getting all users");
-
+          logger.info("getting all users");
             return userService.findAll();
         } catch (Exception e) {
-          //  logger.error("error get all users");
+           logger.error("error get all users");
 
             throw new ControllerException("getUsers", e);
         }
@@ -43,7 +48,7 @@ public class MainRestController {
     public ResponseEntity<?> loginUser(@RequestBody AuthRequest authRequest) throws ControllerException
     {
         try{
-            //logger.debug("try to login user");
+            logger.debug("try to login user");
 
             User user = userService.findByLoginAndPassword(authRequest.getLogin(), authRequest.getPassword());
             if(user != null)
@@ -58,7 +63,7 @@ public class MainRestController {
                 throw new ControllerException("Пользователь не найден");
             }
         } catch (ControllerException e) {
-           // logger.error("error login");
+            logger.error("error login");
 
             throw new ControllerException("Ошибка авторизации", e);
         }
@@ -67,7 +72,7 @@ public class MainRestController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest)
     {
-        //logger.debug("try to register user");
+        logger.debug("try to register user");
         if(!userService.existsUserByLogin(registrationRequest.getLogin()))
         {
             User user = new User();
@@ -117,4 +122,44 @@ public class MainRestController {
             throw new ControllerException("getUser", e);
         }
     }
-}
+
+
+    @GetMapping("/admin/getUserById/{id}")
+    public ResponseEntity<?> getTutorByIdForAdmin(@PathVariable(name="id") Long id)throws ControllerException {
+        User stuff = null;
+        try {
+            stuff = userService.getById(id);
+            return new ResponseEntity<>(stuff,HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+        }
+    }
+
+    @DeleteMapping("/admin/deleteUserById/{id}")
+    public ResponseEntity<?> deleteTutorById(@PathVariable(name="id")Long id)throws ControllerException {
+        try {
+            userService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+
+        }
+    }
+
+
+    @PutMapping("/user/updateUserById")
+    public ResponseEntity<?> updateUserById(@RequestBody UserResponse userResponse)throws ControllerException {
+        try {
+            User man = userService.getById( userResponse.getId());
+            userService.updateUserById(
+                    userResponse.getId(),
+                    userResponse.getName(),
+                    userResponse.getSurname(),
+                    userResponse.getEmail()
+            );
+            return new ResponseEntity<>(man, HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+
+        }
+}}

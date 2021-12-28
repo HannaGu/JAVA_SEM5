@@ -1,5 +1,6 @@
 package gaa.tutors.controllers;
 
+import gaa.tutors.config.MailSender;
 import gaa.tutors.dto.ContractRequest;
 import gaa.tutors.dto.TutorRequest;
 import gaa.tutors.dto.TutorRequestRate;
@@ -9,7 +10,6 @@ import gaa.tutors.jwt.JwtFilter;
 import gaa.tutors.models.Tutor;
 import gaa.tutors.models.User;
 import gaa.tutors.repository.ContractRepo;
-import gaa.tutors.service.ContractService;
 import gaa.tutors.service.TutorService;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,13 @@ import java.util.logging.Logger;
 public class TutorRestController {
     @Autowired
     private TutorService tutorService;
-    @Autowired
-    private ContractService contractService;
+
     @Autowired
     private ContractRepo contractRepository;
+
+    @Autowired
+    private MailSender mailSender;
+
 
     @PostMapping("/user/getAllTutors")
     public List<Tutor> getTutors() throws ControllerException {
@@ -87,6 +90,7 @@ public class TutorRestController {
                 tutorRequestNoId.getRate());
         try {
             tutorService.create(tutor);
+            mailSender.sendMail(tutorRequestNoId.getEmail(), "Объявление", "Ваше объявление успешно опубликовано");
             return new ResponseEntity<>(tutor, HttpStatus.OK);
         } catch (ServiceException e) {
             throw new ControllerException(e);
@@ -127,6 +131,34 @@ public class TutorRestController {
         }
     }
 
+    @PostMapping("/admin/createTutor")
+    public ResponseEntity<?> createTutorAdmin(@RequestBody TutorRequestNoId tutorRequestNoId) throws ControllerException {
+        Tutor tutor = new Tutor(
+                tutorRequestNoId.getName(),
+                tutorRequestNoId.getSurname(),
+                tutorRequestNoId.getEmail(),
+                tutorRequestNoId.getSubject(),
+                tutorRequestNoId.getCost(),
+                tutorRequestNoId.getRate());
+        try {
+            tutorService.create(tutor);
+            return new ResponseEntity<>(tutor, HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+        }
+    }
+
+    @DeleteMapping("/admin/deleteTutorById/{id}")
+    public ResponseEntity<?> deleteTutorById(@PathVariable(name="id")Long id)throws ControllerException {
+        try {
+            tutorService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            throw new ControllerException(e);
+
+        }
+   }
+
     @GetMapping({"/",""})
     public ModelAndView indexPage(Model model){
         ModelAndView modelAndView = new ModelAndView();
@@ -136,17 +168,5 @@ public class TutorRestController {
         return modelAndView;
     }
 
-    @DeleteMapping("/admin/deleteTutorById")
-    public ResponseEntity<?> deleteTutorById(@RequestBody TutorRequest tutorRequest)throws ControllerException {
-        try {
-            Tutor man = tutorService.getById(tutorRequest.getId());
-            contractRepository.deleteByTutorId(tutorRequest.getId());
-            tutorService.deleteById(tutorRequest.getId());
-            return new ResponseEntity<>(man, HttpStatus.OK);
-        } catch (ServiceException | RepositoryException e ) {
-            throw new ControllerException(e);
-
-        }
-    }
 
 }

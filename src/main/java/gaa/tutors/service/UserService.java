@@ -7,6 +7,7 @@ import gaa.tutors.repository.UserRepo;
 import gaa.tutors.repository.UserRoleRepo;
 
 import gaa.tutors.service.interfaces.IUserService;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,6 +18,18 @@ public class UserService implements IUserService {
     private UserRepo userRepository;
     @Autowired
     private UserRoleRepo userRoleRepository;
+
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.getById(id);
+    }
 
     @Override
     public User saveUser(User user) {
@@ -60,5 +73,10 @@ public class UserService implements IUserService {
     @Override
     public boolean existsUserByLoginAndPassword(String login, String password) {
         return findByLoginAndPassword(login, password) != null;
+    }
+
+    @Override
+    public void updateUserById(Long id, String name, String surname, String email) throws ServiceException {
+
     }
 }

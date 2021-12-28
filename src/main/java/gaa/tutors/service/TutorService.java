@@ -1,4 +1,5 @@
 package gaa.tutors.service;
+import gaa.tutors.config.MailSender;
 import gaa.tutors.exceptions.RepositoryException;
 import gaa.tutors.models.Tutor;
 import gaa.tutors.repository.TutorRepo;
@@ -14,6 +15,9 @@ public class TutorService implements ITutorService {
 
     @Autowired
     private TutorRepo tutorRepository;
+
+    @Autowired
+    private MailSender mailSender;
 
     @Override
     public void deleteById(Long id) {

@@ -37,6 +37,15 @@ async function getUserByToken(token) {
         }
     });
 }
+/*
+async function getUserById(id) {
+    return await fetch(`/admin/getUser/${id}`, {
+        method: 'POST',
+        headers: {
+            'Authorisation': `Bearer ${token}`
+        }
+    });
+}*/
 
 async function authorizedUser(token) {
     return await fetch("/authorized", {
