@@ -116,4 +116,96 @@ function genLogout() {
     divLogOut.appendChild(logoutBtn)
 }
 
+async function genNext() {
+    let div = document.querySelector('.nextPrev');
+    let logoutBtn = button(await next, 'Next');
+    div.appendChild(logoutBtn)
+}
 
+function genPrev() {
+    let div = document.querySelector('.nextPrev');
+    let logoutBtn = button(prev, 'Prev');
+    div.appendChild(logoutBtn)
+}
+/*
+
+async function next() {
+    let result = document.querySelector('.results');
+    await fetch("/users", {
+        method: "POST",
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        if (end < data.length) {
+            start += showCount;
+            end += showCount;
+        }
+        generateListOfUsers(result);
+    });
+}
+
+async function prev() {
+    let result = document.querySelector('.results');
+    if (start - showCount >= 0) {
+        start -= showCount;
+        end -= showCount;
+    }
+    await generateListOfUsers(result);
+}
+*/
+
+
+
+
+
+
+
+
+
+////-----------------------------------------------------------
+
+async function generateListOfTutors(result) {
+    //let result = document.querySelector('.tutors');
+    result.innerText = '';
+    let token=localStorage.getItem('token');
+    let data = await getAllTutors(token);
+
+    let showed = data.length;
+    if (showed > end) {
+        showed = end
+    }
+    let head=p('Репетитор'+'   '+'Почта'+'   '+'Предмет'+'   '+'USD в час')
+    let divHead=div();
+    divHead.appendChild(head);
+    result.appendChild(divHead);
+    for (let i = start; i < showed; i++) {
+        let divP = div();
+        let text = p(data[i].name+' '+data[i].surname+'  '+data[i].email+'  '+data[i].subject+'  '+data[i].cost);
+        divP.appendChild(text);
+        result.appendChild(divP);
+    }
+}
+
+async function next() {
+    let result = document.querySelector('.results');
+    await fetch("/user/getAllTutors", {
+        method: "POST",
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        if (end < data.length) {
+            start += showCount;
+            end += showCount;
+        }
+        generateListOfUsers(result);
+    });
+}
+
+async function prev() {
+    let result = document.querySelector('.results');
+    if (start - showCount >= 0) {
+        start -= showCount;
+        end -= showCount;
+    }
+    await generateListOfUsers(result);
+}

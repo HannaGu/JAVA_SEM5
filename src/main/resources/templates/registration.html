@@ -4,19 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <script th:src="@{../js/reg.js}"></script>
 </head>
 <body>
 <h3>Регистрация</h3>
-<div>
+
 <input type="text" id="login" placeholder="login"><br>
 <input type="password" id="password" placeholder="password"><br>
-<input type="email" id="email" placeholder="email"><br>
-<input type="name" id="name" placeholder="name"><br>
-<input type="surname" id="surname" placeholder="surname"><br>
+<input type="email" id="email" placeholder="email">
+<input type="name" id="name" placeholder="name">
+<input type="surname" id="surname" placeholder="surname">
 <button onclick="reg()" th:method="post">Submit</button><br>
-</div>
+<a href="/">home</a><br>
 <div id="message"></div>
 </body>
 </html>

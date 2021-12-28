@@ -36,8 +36,8 @@ async function updateTutorButton(){
             id: id,
             name: name,
             surname: surname,
-            subject:subject,
-            email:email,
+            email: email,
+            subject: subject,
             cost: cost,
             rate: rate
         }, token);

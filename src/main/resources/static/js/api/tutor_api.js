@@ -77,13 +77,6 @@ async function userAddTutor() {
             subject: document.getElementById("subject").value,
             cost: document.getElementById("cost").value
         };
-            if(ocument.getElementById("subject").value.length===0||ocument.getElementById("cost").value.length===0){
-                document.getElementById('err').innerHTML='Заполните все поля'
-            }
-            if(document.getElementById("cost").value<=0){
-                document.getElementById('err').innerHTML='Цена должно превышать 0';
-            }
-
         createTutor(info);
         alert("Ваше объявление успешно обработано");
         window.location.replace(window.location.origin);
@@ -101,37 +94,20 @@ async function createTutor(data) {
         });
 }
 
-
-
-
-async function adminAddTutor() {
-    let token=localStorage.getItem("token");
-
-     let info = {
-            name: document.getElementById("name").value,
-            surname: document.getElementById("surname").value,
-            email: document.getElementById("email").value,
-            subject: document.getElementById("subject").value,
-            cost: document.getElementById("cost").value,
-            rate: 1
-        };
-        await createTutorAdmin(info);
-        alert("Репетитор успешно добавлен");
-        window.location.replace(window.location.origin);
-
-
-}
-
-async function createTutorAdmin(data) {
-    let token=localStorage.getItem("token");
-    return await fetch("/admin/createTutor",{
-        method :'POST',
-        headers:{'Authorization': `Bearer ${token}`,
-            'Content-Type':'application/json'},
-        body:JSON.stringify(data)
+async function deleteTutorById(data, token) {
+    return await fetch("/user/deleteTutorById", {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
     });
 }
 
+
+
+/*
 async function updateTutor() {
     let token=localStorage.getItem("token");
     return await fetch("/user/updateTutor", {
@@ -143,36 +119,6 @@ async function updateTutor() {
         body: JSON.stringify({
 
         })
+
     });
-}
-
-
-async function adminDeleteTutor(id){
-    let token = localStorage.getItem('token');
-    await deleteContractByTutorId(id, token);
-    await deleteTutorById(id, token);
-    alert("Репетитор успешно удален");
-    window.location.replace(window.location.origin);
-
-}
-
-async function deleteTutorById(id, token) {
-    if(confirm('Уверены, что хотите удалить выбранный объект?')){
-    return await fetch(`/admin/deleteTutorById/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'content-type': 'application/json'
-        },
-    });}
-}
-
-async function deleteContractByTutorId(id, token) {
-    return await fetch(`/admin/deleteContractByTutorId/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'content-type': 'application/json'
-        }
-    });
-}
+}*/

@@ -1,14 +1,12 @@
-function validateLoginPass(login, password , email, name, surname) {
-    if(login===''||password===''||email===''||name===''||surname==='')
-        return "Заполните все поля";
-    if (!(login.length >= 4 && login.length <= 20)) {
-        return "Длина логина от 4 до 20 символов";
+function validateLoginPass(login, password , email) {
+    if (!(login.length >= 4 && login.length <= 16)) {
+        return "not correct login";
     }
-    if (!(password.length >= 4 && password.length <=20)) {
-        return "Длина пароля от 4 до 20 символов";
+    if (!(password.length >= 4 && password.length <= 16)) {
+        return "not correct password";
     }
     if (!email.length >= 4) {
-        return "Длина почты не менее 4 символов";
+        return "not correct email";
     }
 
     return true;
@@ -31,14 +29,14 @@ async function reg() {
     let mes = document.getElementById("message");
     let name = document.getElementById("name").value;
     let surname = document.getElementById("surname").value;
-    let result = await validateLoginPass(login, password , email, name, surname);
+    let result = await validateLoginPass(login, password , email);
     if (result === true) {
         let data = {login: login, password: password,email:email, name:name, surname:surname};
         let res = await regUser(data);
         if (res.ok) {
-            window.location.replace(document.location.origin+'/loginin');
+            window.location.replace(window.location.origin);
         } else {
-            mes.innerHTML = "Пользователь с таким логином уже существует";
+            mes.innerHTML = "this user already exist";
         }
 
     } else {

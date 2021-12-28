@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <!--<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">-->
     <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
     <!--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
@@ -32,30 +31,55 @@
 </script>
 
 
-<div>
+
 <button onclick="logOut()">Logout</button>
 </br>
 <div id="refsForUser"></div>
+
+<div>
+    <p>Фильтр</p>
+    По оценке:
+<select name="rates" id="rateFilter">
+    <option value="highFirst">Сначала высокие</option>
+    <option value="lowFirst">Сначала низкие</option>
+</select>
+    По цене:
+    <select name="costs" id="costFilter">
+        <option value="highcostFirst">Сначала высокая</option>
+        <option value="lowcostFirst">Сначала низкая</option>
+    </select>
 </div>
+</br>
 
 <div id="search">
 <input type="text" id="searchTutor" placeholder="Имя/фамилия/предмет">
 </div>
+<p id="searchResults"></p>
+
 </br>
+<!--<table>
+    <tr>
+        <td>Репетитор</td>
+        <td></td>
+        <td>Предмет</td>
+        <td>Почта</td>
+        <td>Оплата в час (USD)</td>
+        <td>Оценка</td>
+    </tr>
+    <tr th:each="tutor : ${tutors}">
+        <td th:text="${tutor.name}"></td>
+        <td th:text="${tutor.surname}"></td>
+        <td th:text="${tutor.subject}"></td>
+        <td th:text="${tutor.email}"></td>
+        <td th:text="${tutor.cost}"></td>
+        <td th:text="${tutor.rate}"></td>
+        <td><a th:href="'/orderPage/'+${tutor.id}">Заказать</a></td>
+    </tr>
+</table>-->
 
 <div id="allTutorsContainer">
 <table id="allTutors">
 </table>
-</div>
-
-<div id="searchUser">
-</div>
-</br>
-
-
-<div id="allUsersContainer">
-    <table id="allUsers">
-    </table>
 </div>
 
 <script>

@@ -1,4 +1,15 @@
 
+async function setUserRentFormById(data,token) {
+    return await fetch("/admin/setUserRentFormById",{
+        method :'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'content-type': 'application/json'
+        },
+        body:JSON.stringify(data)
+
+    });
+}
 async function getAllUserRentByUserId(id, token) {
     return await fetch(`/user/getAllByUserId/${id}`,{
         method :'GET',

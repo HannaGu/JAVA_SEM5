@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "contract_table")
@@ -21,19 +19,18 @@ public class ContractForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-@NotNull
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-@NotNull
+
     @ManyToOne
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
-    @Min(0)
     @Column
     private Long hours;
-    @Min(0)
+
     @Column
     private Long total;
 

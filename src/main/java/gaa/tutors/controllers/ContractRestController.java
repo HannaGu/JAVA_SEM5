@@ -1,11 +1,8 @@
 package gaa.tutors.controllers;
 
-import gaa.tutors.config.MailSender;
 import gaa.tutors.dto.ContractRequest;
 import gaa.tutors.dto.ContractRequestNoId;
-import gaa.tutors.dto.TutorRequest;
 import gaa.tutors.exceptions.ControllerException;
-import gaa.tutors.exceptions.RepositoryException;
 import gaa.tutors.jwt.JwtFilter;
 import gaa.tutors.jwt.JwtProvider;
 import gaa.tutors.models.ContractForm;
@@ -37,12 +34,7 @@ public class ContractRestController {
     private ContractService contractService;
 
     @Autowired
-    private ContractRepo contractRepository;
-
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private MailSender mailSender;
 
 
     @PostMapping("/user/createContract")
@@ -63,26 +55,5 @@ public class ContractRestController {
         }
     }
 
-    @DeleteMapping("/admin/deleteContractByTutorId/{id}")
-    public ResponseEntity<?> deleteContractByTutorId(@PathVariable(name="id")Long id)throws ControllerException {
-        try {
-            contractRepository.deleteByTutorId(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ServiceException | RepositoryException e) {
-            throw new ControllerException(e);
-
-        }
-    }
-
-    @DeleteMapping("/admin/deleteContractByUserId/{id}")
-    public ResponseEntity<?> deleteContractByUserId(@PathVariable(name="id")Long id)throws ControllerException {
-        try {
-            contractRepository.deleteByUserId(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ServiceException | RepositoryException e) {
-            throw new ControllerException(e);
-
-        }
-    }
 
 }

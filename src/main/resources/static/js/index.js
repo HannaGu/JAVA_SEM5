@@ -61,10 +61,7 @@ async function generateSearchForAdmin() {
         <td>Оценка</td>
     </tr>`;
         for (let i = 0; i < listProject.length; i++) {
-            if (inputResult.toUpperCase() === listProject[i]['name'].toUpperCase()||
-                inputResult.toUpperCase() === listProject[i]['surname'].toUpperCase()||
-                inputResult.toUpperCase() === listProject[i]['subject'].toUpperCase()||
-                inputResult.toUpperCase() === listProject[i]['name'].toUpperCase()+' '+listProject[i]['surname'].toUpperCase()){
+            if (inputResult === listProject[i]['name']|| inputResult === listProject[i]['surname']|| inputResult === listProject[i]['subject']) {
                 list.innerHTML+=`<tr>
                 <td>${listProject[i]['name']}</td>
                 <td>${listProject[i]['surname']}</td>
@@ -73,7 +70,6 @@ async function generateSearchForAdmin() {
                 <td>${listProject[i]['cost']}</td>
                 <td>${listProject[i]['rate']}</td>
                 <td><a href="/updatetutorAdmin/+${listProject[i]['id']}">Изменить</a></td>
-                <td><button onclick="adminDeleteTutor(${listProject[i]['id']})">Удалить</button></td>
                 </tr>`;}
         }
         if(list.innerHTML==='')
@@ -88,54 +84,14 @@ async function onIndexLoad() {
         if (await isAdmin()) {
             await loadAdminIndex();
             await loadTutorsForAdmin();
-            await loadUsersForAdmin();
         } else {
             await loadUserIndex();
             await loadTutors();
         }
     } else {
-        //genLogReg(result);
+        genLogReg(result);
     }
 }
-
-async function generateUserSearchForAdmin(){
-    let token = localStorage.getItem('token');
-    let inputResult_origin = document.getElementById('searchUserAdmin').value;
-    let inputResult=inputResult_origin;
-    if(inputResult_origin.length>0){
-        inputResult = inputResult_origin[0].toUpperCase() + inputResult_origin.slice(1);}
-    let list = document.getElementById('allUsers');
-    list.innerHTML = '';
-    if(inputResult.length===0){
-        await loadUsersForAdmin();
-    }else{
-        let listProject = await getAllUsers();
-        list.innerHTML+=`<tr>
-        <td>Пользователь</td>
-        <td></td>
-        <td>Логин</td>
-        <td>Почта</td>
-        <td>Роль</td>
-    </tr>`;
-        for (let i = 0; i < listProject.length; i++) {
-            if (inputResult.toUpperCase() === listProject[i]['name'].toUpperCase()||
-                inputResult.toUpperCase() === listProject[i]['surname'].toUpperCase()||
-                inputResult.toUpperCase() === listProject[i]['login'].toUpperCase()||
-                inputResult.toUpperCase() === listProject[i]['name'].toUpperCase()+' '+listProject[i]['surname'].toUpperCase())
-            {
-                list.innerHTML+=`<tr>
-                <td>${listProject[i]['name']}</td>
-                <td>${listProject[i]['surname']}</td>
-                <td>${listProject[i]['login']}</td>
-                <td>${listProject[i]['email']}</td>
-                <td>${listProject[i].userRole.name}</td>
-                <td><a href="/updateuserAdmin/+${listProject[i]['id']}">Изменить</a></td>
-                <td><button onclick="adminDeleteUser(${listProject[i]['id']})">Удалить</button></td>
-                </tr>`;}
-        }
-    }
-}
-
 
 async function loadUserIndex(){
     let hrefs=document.getElementById('refsForUser');
@@ -150,20 +106,11 @@ async function loadUserIndex(){
     search.appendChild(searchButton);
 }
 
+//TODO
 async function loadAdminIndex(){
     let search=document.getElementById('search');
-    let searchUser=document.getElementById('searchUser');
-    searchUser.innerHTML=`<input type="text" id="searchUserAdmin" placeholder="Имя/фамилия/логин">`;
-    let tutorContainer=document.getElementById('allTutorsContainer');
-    let userContainer=document.getElementById('allUsersContainer');
     let searchButton=await button( generateSearchForAdmin,'Поиск');
-    let searchUserButton=await button( generateUserSearchForAdmin,'Поиск');
-    let createHref=await a( 'addtutoradmin','Добавить репетитора');
-    let createHrefUser=await a( 'adduseradmin','Добавить пользователя');
     search.appendChild(searchButton);
-    searchUser.appendChild(searchUserButton);
-    tutorContainer.appendChild(createHref);
-    userContainer.appendChild(createHrefUser);
 
 }
 
@@ -190,7 +137,7 @@ async function loadTutors(){
                 <td>${listProject[i]['cost']}</td>
                 <td>${listProject[i]['rate']}</td>
                 <td><a href="/orderPage/+${listProject[i]['id']}">Заказать</a></td>
-                 </tr>
+                </tr>
     `;}
 }
 
@@ -218,37 +165,10 @@ async function loadTutorsForAdmin(){
                 <td>${listProject[i]['cost']}</td>
                 <td>${listProject[i]['rate']}</td>
                 <td><a href="/updatetutorAdmin/+${listProject[i]['id']}">Изменить</a></td>
-                <td><button onclick="adminDeleteTutor(${listProject[i]['id']})">Удалить</button></td>
+                <td><button onclick="deleteTutor(${listProject[i]['id']})">Удалить</button></td>
                 </tr>
     `;}
 }
-
-
-async function loadUsersForAdmin(){
-    let token = localStorage.getItem('token');
-    let list = document.getElementById('allUsers');
-    list.innerHTML = '';
-    let listProject = await getAllUsers();
-    list.innerHTML+=`<tr>
-        <td>Пользователь</td>
-        <td></td>
-        <td>Логин</td>
-        <td>Почта</td>
-        <td>Роль</td>
-    </tr>`;
-    for (let i = 0; i < listProject.length; i++) {
-        list.innerHTML+=`<tr>
-                <td>${listProject[i]['name']}</td>
-                <td>${listProject[i]['surname']}</td>
-                <td>${listProject[i]['login']}</td>
-                <td>${listProject[i]['email']}</td>
-                <td>${listProject[i].userRole.name}</td>
-                <td><button onclick='adminDeleteUser(${listProject[i]['id']})'>Удалить</button></td>
-                </tr>
-    `;}
-}
-
-
 
 
 

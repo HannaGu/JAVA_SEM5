@@ -1,5 +1,4 @@
 package gaa.tutors.models;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,6 @@ import javax.persistence.*;
 @Data
 @Getter
 @Setter
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
