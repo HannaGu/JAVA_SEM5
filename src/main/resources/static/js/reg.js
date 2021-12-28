@@ -1,12 +1,12 @@
 function validateLoginPass(login, password , email) {
-    if (!(login.length >= 4 && login.length <= 16)) {
-        return "not correct login";
+    if (!(login.length >= 4 && login.length <= 20)) {
+        return "Длина логина от 4 до 20 символов";
     }
-    if (!(password.length >= 4 && password.length <= 16)) {
-        return "not correct password";
+    if (!(password.length >= 4 && password.length <=20)) {
+        return "Длина пароля от 4 до 20 символов";
     }
     if (!email.length >= 4) {
-        return "not correct email";
+        return "Длина почты не менее 4 символов";
     }
 
     return true;
@@ -36,7 +36,7 @@ async function reg() {
         if (res.ok) {
             window.location.replace(window.location.origin);
         } else {
-            mes.innerHTML = "this user already exist";
+            mes.innerHTML = "Пользователь с таким логином уже существует";
         }
 
     } else {

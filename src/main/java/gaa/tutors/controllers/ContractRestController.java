@@ -1,5 +1,6 @@
 package gaa.tutors.controllers;
 
+import gaa.tutors.config.MailSender;
 import gaa.tutors.dto.ContractRequest;
 import gaa.tutors.dto.ContractRequestNoId;
 import gaa.tutors.dto.TutorRequest;
@@ -40,6 +41,8 @@ public class ContractRestController {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private MailSender mailSender;
 
 
     @PostMapping("/user/createContract")

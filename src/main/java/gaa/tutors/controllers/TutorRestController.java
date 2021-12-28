@@ -1,5 +1,6 @@
 package gaa.tutors.controllers;
 
+import gaa.tutors.config.MailSender;
 import gaa.tutors.dto.ContractRequest;
 import gaa.tutors.dto.TutorRequest;
 import gaa.tutors.dto.TutorRequestRate;
@@ -29,6 +30,9 @@ public class TutorRestController {
 
     @Autowired
     private ContractRepo contractRepository;
+
+    @Autowired
+    private MailSender mailSender;
 
 
     @PostMapping("/user/getAllTutors")
@@ -86,6 +90,7 @@ public class TutorRestController {
                 tutorRequestNoId.getRate());
         try {
             tutorService.create(tutor);
+            mailSender.sendMail(tutorRequestNoId.getEmail(), "Объявление", "Ваше объявление успешно опубликовано");
             return new ResponseEntity<>(tutor, HttpStatus.OK);
         } catch (ServiceException e) {
             throw new ControllerException(e);
